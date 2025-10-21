@@ -5,7 +5,7 @@ import { TodoData } from "../contexts/TodoData";
 import { useEffect, useState } from "react";
 import Completed from "../routes/Completed";
 import NotCompleted from "../routes/NotCompleted";
-import All from "../routes/all";
+import All from "../routes/All";
 
 import CustomNavTabs from "../components/CustomNavTabs";
 
