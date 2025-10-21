@@ -37,6 +37,7 @@ export default function Todolist() {
       localStorage.setItem("todolist", JSON.stringify(newTodosList));
 
       setInputTitle("");
+      console.log("ss");
     }
   }
 
