@@ -42,11 +42,6 @@ export default function Todolist() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  function handleEditComplete() {
-    setSnackMessage("تم التعديل بنجاح");
-    setSnackBarOpen(true);
-  }
-
   function handleAdd(e) {
     if (inputTitle) {
       const newTodo = { id: todolist.length + 1, title: inputTitle, note: "", isCompleted: false };
@@ -59,6 +54,18 @@ export default function Todolist() {
     }
   }
 
+  function closeEditModal() {
+    setEditModalOpen(false);
+
+    setSnackMessage("تم التعديل بنجاح");
+    setSnackBarOpen(true);
+  }
+  function closeDeleteModal() {
+    setDeleteModalOpen(false);
+
+    setSnackMessage("تم الحذف بنجاح");
+    setSnackBarOpen(true);
+  }
   return (
     <TodoData.Provider value={{ todolist, setTodolist }}>
       <Snacks.Provider value={{ setSnackBarOpen, setSnackMessage }}>
@@ -99,17 +106,8 @@ export default function Todolist() {
 
           <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} />
 
-          {editModalOpen && (
-            <EditModal
-              open={editModalOpen}
-              onClose={() => setEditModalOpen(false)}
-              todo={modalTodo}
-              handleComplete={handleEditComplete}
-            />
-          )}
-          {deleteModalOpen && (
-            <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} id={modalTodo.id} />
-          )}
+          {modalTodo && <EditModal open={editModalOpen} onClose={closeEditModal} todo={modalTodo} />}
+          {modalTodo && <DeleteModal open={deleteModalOpen} onClose={closeDeleteModal} id={modalTodo.id} />}
         </Modals.Provider>
       </Snacks.Provider>
     </TodoData.Provider>

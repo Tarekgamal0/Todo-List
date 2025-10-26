@@ -22,7 +22,7 @@ const modalStyle = {
 const formStyle = { paddingBottom: "10px" };
 const InputFontSize = { fontSize: "20px" };
 
-export default function EditModal({ open, onClose, todo, handleComplete }) {
+export default function EditModal({ open, onClose, todo }) {
   const { todolist, setTodolist } = useContext(TodoData);
 
   const [formData, setFormData] = useState(todo);
@@ -40,7 +40,7 @@ export default function EditModal({ open, onClose, todo, handleComplete }) {
     setTodolist(todolistCpy);
     localStorage.setItem("todolist", JSON.stringify(todolistCpy));
     onClose();
-    handleComplete();
+    // handleComplete();
   }
   return (
     <Modal open={open} onClose={onClose} aria-labelledby="modal-edit-todo">

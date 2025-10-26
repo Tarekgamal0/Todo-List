@@ -33,6 +33,7 @@ export default function Buttonlist({ todo }) {
     });
     setTodolist(todolistCpy);
     localStorage.setItem("todolist", JSON.stringify(todolistCpy));
+    
     setSnackBarOpen(true);
   }
   function editHandle() {

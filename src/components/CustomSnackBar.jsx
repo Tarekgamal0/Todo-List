@@ -1,14 +1,15 @@
 import Snackbar from "@mui/material/Snackbar";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { Alert } from "@mui/material";
 
-let myStyle = {
-  width: "200px",
-  height: "50px",
-  backgroundColor: "green",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
+// let myStyle = {
+//   width: "200px",
+//   height: "50px",
+//   backgroundColor: "green",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// };
 export default function CustomSnackbar({ open, onClose, message }) {
   return (
     <Snackbar
@@ -17,9 +18,10 @@ export default function CustomSnackbar({ open, onClose, message }) {
       autoHideDuration={3000}
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
-      <div style={myStyle}>
+      {/* <Alert style={myStyle}>
         {message} <TaskAltIcon />
-      </div>
+      </Alert> */}
+      <Alert sx={{ direction: "rtl", paddingX: "20px" }}>{message}</Alert>
     </Snackbar>
   );
 }
