@@ -1,8 +1,8 @@
-import { Button, Container, Divider, Grid, TextField } from "@mui/material";
+import { Button, Container, Divider, Grid, Modal, TextField } from "@mui/material";
 import { Routes, Route } from "react-router";
 
 import { TodoData } from "../contexts/TodoData";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Completed from "../routes/Completed";
 import NotCompleted from "../routes/NotCompleted";
 import All from "../routes/All";
@@ -10,10 +10,11 @@ import All from "../routes/All";
 import CustomNavTabs from "../components/CustomNavTabs";
 
 import CustomSnackbar from "./CustomSnackBar";
-import { Snacks } from "../contexts/Snacks";
+import { Snacks } from "../contexts/SnacksProvider";
+import { Modals } from "../contexts/ModalsProvider";
+
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import { Modals } from "../contexts/modals";
 
 const initialTodolist = [
   { id: 1, title: "قراءة 3 كتب ", note: "الانجاز قبل نهاية الشهر", isCompleted: false },
@@ -22,6 +23,10 @@ const initialTodolist = [
 ];
 export default function Todolist() {
   const [todolist, setTodolist] = useState([]);
+  const [inputTitle, setInputTitle] = useState("");
+
+  const { editModalOpen, deleteModalOpen } = useContext(Modals);
+  const { snackBarOpen, setSnackBarOpen, snackMessage } = useContext(Snacks);
 
   useEffect(() => {
     if (localStorage.getItem("todolist") === null) {
@@ -33,15 +38,6 @@ export default function Todolist() {
     }
   }, []);
 
-  const [inputTitle, setInputTitle] = useState("");
-
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [snackMessage, setSnackMessage] = useState("");
-
-  const [selectedModalTodo, setSelectedModalTodo] = useState(null);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
   function handleAdd(e) {
     if (inputTitle) {
       const newTodo = { id: todolist.length + 1, title: inputTitle, note: "", isCompleted: false };
@@ -49,64 +45,50 @@ export default function Todolist() {
       const newTodosList = [...todolist, newTodo];
       setTodolist(newTodosList);
       localStorage.setItem("todolist", JSON.stringify(newTodosList));
-
       setInputTitle("");
     }
   }
 
   return (
     <TodoData.Provider value={{ todolist, setTodolist }}>
-      <Snacks.Provider value={{ setSnackBarOpen, setSnackMessage }}>
-        <Modals.Provider
-          value={{
-            editModalOpen,
-            setEditModalOpen,
-            deleteModalOpen,
-            setDeleteModalOpen,
-            selectedModalTodo,
-            setSelectedModalTodo,
-          }}
-        >
-          <Container maxWidth="sm" sx={{ backgroundColor: "white", paddingBottom: 5, width: "600px" }}>
-            <h1 style={{ fontSize: 70, textAlign: "center" }}>مهامي</h1>
-            <Divider />
-            <CustomNavTabs />
-            <Routes>
-              <Route path="/" element={<NotCompleted />} />
-              <Route path="/Completed" element={<Completed />} />
-              <Route path="/all" element={<All />} />
-            </Routes>
-            <Grid container spacing={1} sx={{ marginTop: 3 }}>
-              <Grid size={3}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  sx={{ width: "100%", height: "100%", fontSize: "20px" }}
-                  onClick={handleAdd}
-                  disabled={inputTitle ? false : true}
-                >
-                  اضافة
-                </Button>
-              </Grid>
-              <Grid size={9}>
-                <TextField
-                  id="outlined-required"
-                  label="عنوان المهمة"
-                  color="secondary"
-                  sx={{ width: "100%", fontSize: "30px" }}
-                  value={inputTitle}
-                  onChange={(e) => setInputTitle(e.target.value)}
-                />
-              </Grid>
-            </Grid>
-          </Container>
+      <Container maxWidth="sm" sx={{ backgroundColor: "white", paddingBottom: 5, width: "600px" }}>
+        <h1 style={{ fontSize: 70, textAlign: "center" }}>مهامي</h1>
+        <Divider />
+        <CustomNavTabs />
+        <Routes>
+          <Route path="/" element={<NotCompleted />} />
+          <Route path="/Completed" element={<Completed />} />
+          <Route path="/all" element={<All />} />
+        </Routes>
+        <Grid container spacing={1} sx={{ marginTop: 3 }}>
+          <Grid size={3}>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ width: "100%", height: "100%", fontSize: "20px" }}
+              onClick={handleAdd}
+              disabled={inputTitle ? false : true}
+            >
+              اضافة
+            </Button>
+          </Grid>
+          <Grid size={9}>
+            <TextField
+              id="outlined-required"
+              label="عنوان المهمة"
+              color="secondary"
+              sx={{ width: "100%", fontSize: "30px" }}
+              value={inputTitle}
+              onChange={(e) => setInputTitle(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+      </Container>
 
-          <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} />
+      <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} />
 
-          {editModalOpen && <EditModal />}
-          {deleteModalOpen && <DeleteModal />}
-        </Modals.Provider>
-      </Snacks.Provider>
+      {editModalOpen && <EditModal />}
+      {deleteModalOpen && <DeleteModal />}
     </TodoData.Provider>
   );
 }

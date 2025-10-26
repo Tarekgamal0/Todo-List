@@ -1,6 +1,8 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Todolist from "./components/Todolist";
+import ModalsProvider from "./contexts/ModalsProvider";
+import SnacksProvider from "./contexts/SnacksProvider";
 
 const theme = createTheme({
   palette: {
@@ -28,9 +30,13 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <div style={appStyle}>
-          <Todolist />
-        </div>
+        <SnacksProvider>
+          <ModalsProvider>
+            <div style={appStyle}>
+              <Todolist />
+            </div>
+          </ModalsProvider>
+        </SnacksProvider>
       </ThemeProvider>
     </>
   );

@@ -5,8 +5,8 @@ import { FormControl, Input, InputLabel } from "@mui/material";
 import { useContext, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
-import { Modals } from "../contexts/modals";
-import { Snacks } from "../contexts/Snacks";
+import { Modals } from "../contexts/ModalsProvider";
+import { Snacks } from "../contexts/SnacksProvider";
 
 const modalStyle = {
   position: "absolute",

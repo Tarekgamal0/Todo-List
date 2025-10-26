@@ -6,8 +6,8 @@ import { useContext, useState } from "react";
 
 import { TodoData } from "../contexts/TodoData";
 
-import { Modals } from "../contexts/modals";
-import { Snacks } from "../contexts/Snacks";
+import { Modals } from "../contexts/ModalsProvider";
+import { Snacks } from "../contexts/SnacksProvider";
 
 export default function Buttonlist({ todo }) {
   const { todolist, setTodolist } = useContext(TodoData);
