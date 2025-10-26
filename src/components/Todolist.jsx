@@ -25,8 +25,7 @@ export default function Todolist() {
   const [todolist, setTodolist] = useState([]);
   const [inputTitle, setInputTitle] = useState("");
 
-  const { editModalOpen, deleteModalOpen } = useSnacks();
-  const { snackBarOpen, setSnackBarOpen, snackMessage } = useModals();
+  const { editModalOpen, deleteModalOpen } = useModals();
 
   useEffect(() => {
     if (localStorage.getItem("todolist") === null) {
@@ -85,10 +84,10 @@ export default function Todolist() {
         </Grid>
       </Container>
 
-      <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} />
+      <CustomSnackbar />
 
-      {editModalOpen && <EditModal />}
-      {deleteModalOpen && <DeleteModal />}
+      <EditModal />
+      <DeleteModal />
     </TodoData.Provider>
   );
 }

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { FormControl, Input, InputLabel } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
 import { useModals } from "../contexts/ModalsProvider";
@@ -28,10 +28,19 @@ const InputFontSize = { fontSize: "20px" };
 export default function EditModal() {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const { editModalOpen, setEditModalOpen, selectedModalTodo } = useContext(useModals);
-  const { setSnackBarOpen, setSnackMessage } = useContext(useSnacks);
+  const { editModalOpen, setEditModalOpen, selectedModalTodo } = useModals();
+  const { setSnackBarOpen, setSnackMessage } = useSnacks();
 
-  const [formData, setFormData] = useState(selectedModalTodo);
+  const [formData, setFormData] = useState({ title: "", note: "" });
+
+  useEffect(() => {
+    if (selectedModalTodo) {
+      setFormData(selectedModalTodo);
+    }
+  }, [selectedModalTodo]);
+
+  if (!selectedModalTodo) return null;
+
   function onChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }

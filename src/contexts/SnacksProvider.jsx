@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-export const Snacks = createContext({});
+const Snacks = createContext({});
 
 export default function SnacksProvider({ children }) {
   const [snackBarOpen, setSnackBarOpen] = useState(false);

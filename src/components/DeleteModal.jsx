@@ -21,7 +21,6 @@ const modalStyle = {
   fontSize: "30px",
 };
 
-const formStyle = { paddingBottom: "10px" };
 const InputFontSize = { fontSize: "20px" };
 
 export default function DeleteModal() {
@@ -31,6 +30,8 @@ export default function DeleteModal() {
   const { setSnackBarOpen, setSnackMessage } = useSnacks();
 
   function onSubmit(e) {
+    if (!selectedModalTodo) return;
+
     let todolistCpy = todolist.filter((todo) => {
       if (todo.id !== selectedModalTodo.id) return todo;
     });
