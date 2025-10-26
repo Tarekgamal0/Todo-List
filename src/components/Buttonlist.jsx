@@ -5,18 +5,15 @@ import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import { useContext, useState } from "react";
 
 import { TodoData } from "../contexts/TodoData";
-import CustomSnackbar from "./CustomSnackBar";
-import EditModal from "./EditModal";
-import DeleteModal from "./DeleteModal";
+
+import { Modals } from "../contexts/modals";
+import { Snacks } from "../contexts/Snacks";
 
 export default function Buttonlist({ todo }) {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [snackMessage, setSnackMessage] = useState("");
-
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const { setEditModalOpen, setDeleteModalOpen, setModalTodo } = useContext(Modals);
+  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
 
   let style = {
     border: "2px solid",
@@ -39,15 +36,12 @@ export default function Buttonlist({ todo }) {
     setSnackBarOpen(true);
   }
   function editHandle() {
+    setModalTodo(todo);
     setEditModalOpen(true);
   }
   function deleteHandle() {
+    setModalTodo(todo);
     setDeleteModalOpen(true);
-  }
-
-  function handleEditComplete() {
-    setSnackMessage("تم التعديل بنجاح");
-    setSnackBarOpen(true);
   }
 
   function doneButtonColor() {
@@ -67,16 +61,6 @@ export default function Buttonlist({ todo }) {
       <IconButton aria-label="done" className="IconButton" sx={{ ...style, ...doneButtonColor() }} onClick={doneHandle}>
         <CheckOutlinedIcon />
       </IconButton>
-      <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} id={todo.id} />
-      {editModalOpen && (
-        <EditModal
-          open={editModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          todo={todo}
-          handleComplete={handleEditComplete}
-        />
-      )}
-      {deleteModalOpen && <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} id={todo.id} />}
     </Stack>
   );
 }
