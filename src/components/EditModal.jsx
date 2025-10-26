@@ -5,6 +5,9 @@ import { FormControl, Input, InputLabel } from "@mui/material";
 import { useContext, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
+import { Modals } from "../contexts/modals";
+import { Snacks } from "../contexts/Snacks";
+
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -22,16 +25,19 @@ const modalStyle = {
 const formStyle = { paddingBottom: "10px" };
 const InputFontSize = { fontSize: "20px" };
 
-export default function EditModal({ open, onClose, todo }) {
+export default function EditModal() {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const [formData, setFormData] = useState(todo);
+  const { editModalOpen, setEditModalOpen, selectedModalTodo } = useContext(Modals);
+  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
+
+  const [formData, setFormData] = useState(selectedModalTodo);
   function onChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
   function onSubmit(e) {
     let todolistCpy = todolist.map((item) => {
-      if (item.id === todo.id) {
+      if (item.id === selectedModalTodo.id) {
         item.title = formData.title;
         item.note = formData.note;
       }
@@ -39,11 +45,16 @@ export default function EditModal({ open, onClose, todo }) {
     });
     setTodolist(todolistCpy);
     localStorage.setItem("todolist", JSON.stringify(todolistCpy));
-    onClose();
-    // handleComplete();
+
+    setSnackMessage("تم التعديل بنجاح");
+    setSnackBarOpen(true);
+    setEditModalOpen(false);
+  }
+  function onClose() {
+    setEditModalOpen(false);
   }
   return (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-edit-todo">
+    <Modal open={editModalOpen} onClose={onClose} aria-labelledby="modal-edit-todo">
       <Box sx={modalStyle}>
         <h1 id="modal-title" style={{ fontSize: "30px", fontWeight: "bold" }}>
           تعديل المهمة

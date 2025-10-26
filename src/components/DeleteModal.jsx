@@ -4,6 +4,9 @@ import Modal from "@mui/material/Modal";
 import { useContext, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
+import { Modals } from "../contexts/modals";
+import { Snacks } from "../contexts/Snacks";
+
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -21,20 +24,29 @@ const modalStyle = {
 const formStyle = { paddingBottom: "10px" };
 const InputFontSize = { fontSize: "20px" };
 
-export default function DeleteModal({ open, onClose, id }) {
+export default function DeleteModal() {
   const { todolist, setTodolist } = useContext(TodoData);
+
+  const { deleteModalOpen, setDeleteModalOpen, selectedModalTodo } = useContext(Modals);
+  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
 
   function onSubmit(e) {
     let todolistCpy = todolist.filter((todo) => {
-      if (todo.id !== id) return todo;
+      if (todo.id !== selectedModalTodo.id) return todo;
     });
     setTodolist(todolistCpy);
     localStorage.setItem("todolist", JSON.stringify(todolistCpy));
 
-    onClose();
+    setSnackMessage("تم الحذف بنجاح");
+    setSnackBarOpen(true);
+
+    setDeleteModalOpen(false);
+  }
+  function onClose() {
+    setDeleteModalOpen(false);
   }
   return (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-edit-todo">
+    <Modal open={deleteModalOpen} onClose={onClose} aria-labelledby="modal-edit-todo">
       <Box sx={modalStyle}>
         <h1 id="modal-title" style={{ fontSize: "20px", fontWeight: "bold" }}>
           هل انت متاكد من الحذف ؟

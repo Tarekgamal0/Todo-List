@@ -38,7 +38,7 @@ export default function Todolist() {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
 
-  const [modalTodo, setModalTodo] = useState(null);
+  const [selectedModalTodo, setSelectedModalTodo] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -54,22 +54,19 @@ export default function Todolist() {
     }
   }
 
-  function closeEditModal() {
-    setEditModalOpen(false);
-
-    setSnackMessage("تم التعديل بنجاح");
-    setSnackBarOpen(true);
-  }
-  function closeDeleteModal() {
-    setDeleteModalOpen(false);
-
-    setSnackMessage("تم الحذف بنجاح");
-    setSnackBarOpen(true);
-  }
   return (
     <TodoData.Provider value={{ todolist, setTodolist }}>
       <Snacks.Provider value={{ setSnackBarOpen, setSnackMessage }}>
-        <Modals.Provider value={{ setEditModalOpen, setDeleteModalOpen, setModalTodo }}>
+        <Modals.Provider
+          value={{
+            editModalOpen,
+            setEditModalOpen,
+            deleteModalOpen,
+            setDeleteModalOpen,
+            selectedModalTodo,
+            setSelectedModalTodo,
+          }}
+        >
           <Container maxWidth="sm" sx={{ backgroundColor: "white", paddingBottom: 5, width: "600px" }}>
             <h1 style={{ fontSize: 70, textAlign: "center" }}>مهامي</h1>
             <Divider />
@@ -106,8 +103,8 @@ export default function Todolist() {
 
           <CustomSnackbar open={snackBarOpen} onClose={() => setSnackBarOpen(false)} message={snackMessage} />
 
-          {modalTodo && <EditModal open={editModalOpen} onClose={closeEditModal} todo={modalTodo} />}
-          {modalTodo && <DeleteModal open={deleteModalOpen} onClose={closeDeleteModal} id={modalTodo.id} />}
+          {editModalOpen && <EditModal />}
+          {deleteModalOpen && <DeleteModal />}
         </Modals.Provider>
       </Snacks.Provider>
     </TodoData.Provider>

@@ -12,7 +12,7 @@ import { Snacks } from "../contexts/Snacks";
 export default function Buttonlist({ todo }) {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const { setEditModalOpen, setDeleteModalOpen, setModalTodo } = useContext(Modals);
+  const { setEditModalOpen, setDeleteModalOpen, setSelectedModalTodo } = useContext(Modals);
   const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
 
   let style = {
@@ -33,15 +33,15 @@ export default function Buttonlist({ todo }) {
     });
     setTodolist(todolistCpy);
     localStorage.setItem("todolist", JSON.stringify(todolistCpy));
-    
+
     setSnackBarOpen(true);
   }
   function editHandle() {
-    setModalTodo(todo);
+    setSelectedModalTodo(todo);
     setEditModalOpen(true);
   }
   function deleteHandle() {
-    setModalTodo(todo);
+    setSelectedModalTodo(todo);
     setDeleteModalOpen(true);
   }
 
