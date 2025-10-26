@@ -5,8 +5,8 @@ import { FormControl, Input, InputLabel } from "@mui/material";
 import { useContext, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
-import { Modals } from "../contexts/ModalsProvider";
-import { Snacks } from "../contexts/SnacksProvider";
+import { useModals } from "../contexts/ModalsProvider";
+import { useSnacks } from "../contexts/SnacksProvider";
 
 const modalStyle = {
   position: "absolute",
@@ -28,8 +28,8 @@ const InputFontSize = { fontSize: "20px" };
 export default function EditModal() {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const { editModalOpen, setEditModalOpen, selectedModalTodo } = useContext(Modals);
-  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
+  const { editModalOpen, setEditModalOpen, selectedModalTodo } = useContext(useModals);
+  const { setSnackBarOpen, setSnackMessage } = useContext(useSnacks);
 
   const [formData, setFormData] = useState(selectedModalTodo);
   function onChange(e) {

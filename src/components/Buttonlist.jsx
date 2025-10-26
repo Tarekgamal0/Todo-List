@@ -6,14 +6,14 @@ import { useContext, useState } from "react";
 
 import { TodoData } from "../contexts/TodoData";
 
-import { Modals } from "../contexts/ModalsProvider";
-import { Snacks } from "../contexts/SnacksProvider";
+import { useModals } from "../contexts/ModalsProvider";
+import { useSnacks } from "../contexts/SnacksProvider";
 
 export default function Buttonlist({ todo }) {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const { setEditModalOpen, setDeleteModalOpen, setSelectedModalTodo } = useContext(Modals);
-  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
+  const { setEditModalOpen, setDeleteModalOpen, setSelectedModalTodo } = useModals();
+  const { setSnackBarOpen, setSnackMessage } = useSnacks();
 
   let style = {
     border: "2px solid",

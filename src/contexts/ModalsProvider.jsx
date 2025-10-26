@@ -1,6 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
-export const Modals = createContext({});
+const Modals = createContext({});
 
 export default function ModalsProvider({ children }) {
   const [selectedModalTodo, setSelectedModalTodo] = useState(null);
@@ -22,3 +22,7 @@ export default function ModalsProvider({ children }) {
     </Modals.Provider>
   );
 }
+
+export const useModals = () => {
+  return useContext(Modals);
+};

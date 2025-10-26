@@ -4,8 +4,8 @@ import Modal from "@mui/material/Modal";
 import { useContext, useState } from "react";
 import { TodoData } from "../contexts/TodoData";
 
-import { Modals } from "../contexts/ModalsProvider";
-import { Snacks } from "../contexts/SnacksProvider";
+import { useModals } from "../contexts/ModalsProvider";
+import { useSnacks } from "../contexts/SnacksProvider";
 
 const modalStyle = {
   position: "absolute",
@@ -27,8 +27,8 @@ const InputFontSize = { fontSize: "20px" };
 export default function DeleteModal() {
   const { todolist, setTodolist } = useContext(TodoData);
 
-  const { deleteModalOpen, setDeleteModalOpen, selectedModalTodo } = useContext(Modals);
-  const { setSnackBarOpen, setSnackMessage } = useContext(Snacks);
+  const { deleteModalOpen, setDeleteModalOpen, selectedModalTodo } = useModals();
+  const { setSnackBarOpen, setSnackMessage } = useSnacks();
 
   function onSubmit(e) {
     let todolistCpy = todolist.filter((todo) => {

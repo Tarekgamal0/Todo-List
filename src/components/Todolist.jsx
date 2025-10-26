@@ -10,8 +10,8 @@ import All from "../routes/All";
 import CustomNavTabs from "../components/CustomNavTabs";
 
 import CustomSnackbar from "./CustomSnackBar";
-import { Snacks } from "../contexts/SnacksProvider";
-import { Modals } from "../contexts/ModalsProvider";
+import { useSnacks } from "../contexts/SnacksProvider";
+import { useModals } from "../contexts/ModalsProvider";
 
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
@@ -25,8 +25,8 @@ export default function Todolist() {
   const [todolist, setTodolist] = useState([]);
   const [inputTitle, setInputTitle] = useState("");
 
-  const { editModalOpen, deleteModalOpen } = useContext(Modals);
-  const { snackBarOpen, setSnackBarOpen, snackMessage } = useContext(Snacks);
+  const { editModalOpen, deleteModalOpen } = useSnacks();
+  const { snackBarOpen, setSnackBarOpen, snackMessage } = useModals();
 
   useEffect(() => {
     if (localStorage.getItem("todolist") === null) {

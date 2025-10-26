@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const Snacks = createContext({});
 
@@ -12,3 +12,7 @@ export default function SnacksProvider({ children }) {
     </Snacks.Provider>
   );
 }
+
+export const useSnacks = () => {
+  return useContext(Snacks);
+};
