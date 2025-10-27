@@ -2,15 +2,14 @@ import { Box, IconButton, Modal, Stack, Typography } from "@mui/material";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
-import { useContext, useState } from "react";
 
-import { TodoData } from "../contexts/TodoData";
+import { useTodoData } from "../contexts/TodoDataProvider";
 
 import { useModals } from "../contexts/ModalsProvider";
 import { useSnacks } from "../contexts/SnacksProvider";
 
 export default function Buttonlist({ todo }) {
-  const { todolist, setTodolist } = useContext(TodoData);
+  const { todolist, dispatch } = useTodoData();
 
   const { setEditModalOpen, setDeleteModalOpen, setSelectedModalTodo } = useModals();
   const { setSnackBarOpen, setSnackMessage } = useSnacks();
@@ -23,16 +22,10 @@ export default function Buttonlist({ todo }) {
   };
 
   function doneHandle() {
-    let todolistCpy = todolist.map((item) => {
-      if (item.id === todo.id) {
-        item.isCompleted = !item.isCompleted;
-        if (item.isCompleted) setSnackMessage("تم الاكمال بنجاح");
-        else setSnackMessage("تم التراجع عن الاكمال");
-      }
-      return item;
-    });
-    setTodolist(todolistCpy);
-    localStorage.setItem("todolist", JSON.stringify(todolistCpy));
+    dispatch({ type: "done", payload: { selectedTodo: todo } });
+
+    if (todo.isCompleted) setSnackMessage("تم التراجع عن الاكمال");
+    else setSnackMessage("تم الاكمال بنجاح");
 
     setSnackBarOpen(true);
   }

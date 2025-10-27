@@ -2,8 +2,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { FormControl, Input, InputLabel } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { TodoData } from "../contexts/TodoData";
+import { useEffect, useState } from "react";
+import { useTodoData } from "../contexts/TodoDataProvider";
 
 import { useModals } from "../contexts/ModalsProvider";
 import { useSnacks } from "../contexts/SnacksProvider";
@@ -26,7 +26,7 @@ const formStyle = { paddingBottom: "10px" };
 const InputFontSize = { fontSize: "20px" };
 
 export default function EditModal() {
-  const { todolist, setTodolist } = useContext(TodoData);
+  const { todolist, dispatch } = useTodoData();
 
   const { editModalOpen, setEditModalOpen, selectedModalTodo } = useModals();
   const { setSnackBarOpen, setSnackMessage } = useSnacks();
@@ -45,16 +45,7 @@ export default function EditModal() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
   function onSubmit(e) {
-    let todolistCpy = todolist.map((item) => {
-      if (item.id === selectedModalTodo.id) {
-        item.title = formData.title;
-        item.note = formData.note;
-      }
-      return item;
-    });
-    setTodolist(todolistCpy);
-    localStorage.setItem("todolist", JSON.stringify(todolistCpy));
-
+    dispatch({ type: "update", payload: { selectedTodo: selectedModalTodo, formData } });
     setSnackMessage("تم التعديل بنجاح");
     setSnackBarOpen(true);
     setEditModalOpen(false);

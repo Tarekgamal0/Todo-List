@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { useContext, useState } from "react";
-import { TodoData } from "../contexts/TodoData";
+import { useTodoData } from "../contexts/TodoDataProvider";
 
 import { useModals } from "../contexts/ModalsProvider";
 import { useSnacks } from "../contexts/SnacksProvider";
@@ -24,7 +23,7 @@ const modalStyle = {
 const InputFontSize = { fontSize: "20px" };
 
 export default function DeleteModal() {
-  const { todolist, setTodolist } = useContext(TodoData);
+  const { todolist, dispatch } = useTodoData();
 
   const { deleteModalOpen, setDeleteModalOpen, selectedModalTodo } = useModals();
   const { setSnackBarOpen, setSnackMessage } = useSnacks();
@@ -32,11 +31,7 @@ export default function DeleteModal() {
   function onSubmit(e) {
     if (!selectedModalTodo) return;
 
-    let todolistCpy = todolist.filter((todo) => {
-      if (todo.id !== selectedModalTodo.id) return todo;
-    });
-    setTodolist(todolistCpy);
-    localStorage.setItem("todolist", JSON.stringify(todolistCpy));
+    dispatch({ type: "delete", payload: { selectedTodo: selectedModalTodo } });
 
     setSnackMessage("تم الحذف بنجاح");
     setSnackBarOpen(true);
